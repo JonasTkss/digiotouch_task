@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DroppedItem, Connection } from "@/types/canvas";
+import { DroppedItem, Connection, Position } from "@/types/canvas";
 
 interface WorkflowState {
   nodes: DroppedItem[];
