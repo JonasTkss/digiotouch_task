@@ -2,7 +2,11 @@ import React from "react";
 import { WorkflowItem } from "@/types/workflow";
 import { DroppedItem } from "@/types/canvas";
 import { useAppDispatch, useAppSelector } from "./redux";
-import { addNode, removeNode } from "@/store/workflowSlice";
+import {
+  addNode,
+  removeNode,
+  updateNodeFirstStatus,
+} from "@/store/workflowSlice";
 import { RootState } from "@/store/store";
 
 export const useWorkflowCanvas = () => {
@@ -29,20 +33,27 @@ export const useWorkflowCanvas = () => {
         y: e.clientY - canvas.top,
       };
 
-      // Check if this is the first node
+      const newNodeId = `${item.name}-${Date.now()}`;
+
       const isFirstNode = nodes.length === 0;
 
       const newItem: DroppedItem = {
         ...item,
-        id: `${item.name}-${Date.now()}`,
-        iconName:
-          typeof item.icon.type === "function"
-            ? (item.icon.type as any).displayName ||
-              (item.icon.type as any).name
-            : "",
-        iconColor: item.icon.props.className,
+        id: newNodeId,
+        icon: item.icon,
         position,
-        isFirstNode,
+        data: {
+          name: item.name,
+          description: item.description,
+          iconName:
+            typeof item.icon.type === "function"
+              ? (item.icon.type as any).displayName ||
+                (item.icon.type as any).name
+              : "",
+          iconColor: item.icon.props.className,
+          isFirstNode: isFirstNode,
+          onDelete: () => handleDelete(newNodeId),
+        },
         connectors: {
           inputs: [],
           outputs: [],
@@ -56,7 +67,14 @@ export const useWorkflowCanvas = () => {
   };
 
   const handleDelete = (id: string) => {
-    dispatch(removeNode(id));
+    const deletedNodeIndex = nodes.findIndex((node) => node.id === id);
+    if (deletedNodeIndex === 0 && nodes.length > 1) {
+      const nextNode = nodes[1];
+      dispatch(removeNode(id));
+      dispatch(updateNodeFirstStatus({ id: nextNode.id, isFirstNode: true }));
+    } else {
+      dispatch(removeNode(id));
+    }
   };
 
   return {

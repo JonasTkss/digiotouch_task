@@ -20,9 +20,14 @@ export interface DragConnection {
 export interface DroppedItem extends WorkflowItem {
   id: string;
   position: Position;
-  iconName: string;
-  iconColor: string;
-  isFirstNode: boolean;
+  data: {
+    name: string;
+    description: string;
+    iconName: string;
+    iconColor: string;
+    isFirstNode: boolean;
+    onDelete: () => void;
+  };
   connectors: {
     inputs: string[];
     outputs: string[];

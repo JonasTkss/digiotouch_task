@@ -1,5 +1,5 @@
 import React from "react";
-import ReactFlow, { ConnectionMode, Panel } from "reactflow";
+import ReactFlow, { ConnectionMode } from "reactflow";
 import "reactflow/dist/style.css";
 import { CustomNode } from "./CustomNode";
 import { useWorkflowCanvas } from "@/hooks/useWorkflowCanvas";
@@ -29,6 +29,7 @@ export const ReactFlowCanvas = () => {
   return (
     <div
       className="h-screen w-full"
+      data-testid="react-flow-canvas"
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >

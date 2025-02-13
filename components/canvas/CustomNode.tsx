@@ -18,15 +18,12 @@ const getNodeIcon = (name: string) => {
     YouTube: <YouTubeIcon className="text-red-600" />,
     Twitter: <TwitterIcon className="text-blue-400" />,
     Medium: <AutoStoriesIcon className="text-green-600" />,
-
     "Google Docs": <DescriptionIcon className="text-blue-600" />,
     Notion: <DescriptionIcon className="text-gray-800" />,
     Word: <DescriptionIcon className="text-blue-800" />,
-
     ChatGPT: <SmartToyIcon className="text-green-600" />,
     Claude: <PsychologyIcon className="text-purple-600" />,
     Gemini: <AutoAwesomeIcon className="text-blue-500" />,
-
     Dropbox: <CloudIcon className="text-blue-400" />,
     Drive: <StorageIcon className="text-green-500" />,
     OneDrive: <CloudIcon className="text-blue-600" />,
@@ -45,6 +42,7 @@ export const CustomNode = memo(({ data, isConnectable }: CustomNodeProps) => {
           size="small"
           className="absolute -top-3 -right-3 opacity-0 group-hover:opacity-100 transition-all duration-200 bg-white shadow-md hover:bg-red-50 z-10"
           onClick={data.onDelete}
+          aria-label="Delete node"
         >
           <CloseIcon className="text-red-500" sx={{ fontSize: 18 }} />
         </IconButton>
@@ -67,14 +65,22 @@ export const CustomNode = memo(({ data, isConnectable }: CustomNodeProps) => {
             type="target"
             position={Position.Left}
             isConnectable={isConnectable}
-            className="w-3 h-3 -translate-x-0.5 !bg-blue-400 hover:!bg-blue-500 transition-colors"
+            className="w-4 h-4 -translate-x-0.5 p-1 !bg-blue-400 hover:!bg-blue-500 transition-colors"
+            data-testid="target-handle"
+            role="button"
+            aria-label="Input handle"
+            tabIndex={0}
           />
         )}
         <Handle
           type="source"
           position={Position.Right}
           isConnectable={isConnectable}
-          className="w-3 h-3 translate-x-0.5 !bg-blue-400 hover:!bg-blue-500 transition-colors"
+          className="w-4 h-4 translate-x-0.5 p-1 !bg-blue-400 hover:!bg-blue-500 transition-colors"
+          data-testid="source-handle"
+          role="button"
+          aria-label="Output handle"
+          tabIndex={0}
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Paper, Typography, Divider, Box, IconButton } from "@mui/material";
+import { Paper, Typography, Divider, Box } from "@mui/material";
 import { workflowElements } from "@/utils/workflowData";
 import { WorkflowItem } from "@/types/workflow";
 
@@ -11,73 +11,78 @@ const SideBar = () => {
 
   return (
     <Paper
-      elevation={2}
-      className="w-72 h-screen overflow-y-auto"
+      elevation={3}
+      className="w-[400px] h-screen overflow-y-auto"
       sx={{
-        borderRadius: 0,
-        backgroundColor: "#f0f4f8",
+        borderRadius: "8px 0 0 8px",
+        backgroundColor: "var(--workflow-bg)",
+        boxShadow: "0 4px 12px var(--workflow-shadow)",
       }}
     >
       <Box
-        className="p-4 border-b border-gray-200"
+        className="p-6 border-b"
         sx={{
-          background: "linear-gradient(to right, #2563eb, #3b82f6)",
+          background:
+            "linear-gradient(135deg, var(--workflow-gradient-from) 0%, var(--workflow-gradient-to) 100%)",
+          borderBottom: "1px solid var(--workflow-border)",
         }}
       >
-        <Typography variant="h6" className="font-semibold text-white">
+        <Typography
+          variant="h6"
+          className="font-semibold text-workflow-textLight mb-1"
+        >
           Workflow Elements
         </Typography>
-        <Typography variant="body2" className="text-blue-50">
+        <Typography
+          variant="body2"
+          className="text-workflow-textBlue opacity-90"
+        >
           Drag elements to the canvas
         </Typography>
       </Box>
 
-      <Box className="p-4 space-y-6">
+      <Box className="p-6 space-y-8">
         {workflowElements.map((category) => (
           <Box key={category.category}>
             <Typography
               variant="subtitle2"
-              className="font-medium text-indigo-900 mb-3"
+              className="font-medium text-workflow-textGray mb-4 tracking-wide uppercase text-sm"
             >
               {category.category}
             </Typography>
-            <Box className="space-y-2">
+            <Box className="space-y-3">
               {category.items.map((item) => (
                 <Paper
                   key={item.name}
                   elevation={0}
                   draggable
                   onDragStart={(e) => handleDragStart(e, item)}
-                  className="p-3 border border-gray-100 rounded-lg cursor-move 
-                    hover:bg-gray-50 hover:border-gray-200 hover:shadow-sm transition-all duration-200"
+                  className="p-4 rounded-lg cursor-pointer transition-all duration-300
+                    border border-workflow-borderLight hover:border-workflow-borderHover
+                    hover:shadow-lg hover:bg-workflow-itemBg"
                   sx={{
-                    backgroundColor: item.icon.props.className.includes(
-                      "text-red-600"
-                    )
-                      ? "#fee2e2"
-                      : item.icon.props.className.includes("text-blue-400")
-                      ? "#dbeafe"
-                      : item.icon.props.className.includes("text-green-600")
-                      ? "#d1fae5"
-                      : "#ffffff",
+                    backgroundColor: "var(--workflow-item-bg)",
                     "&:active": {
-                      backgroundColor: "#f8fafc",
-                      borderColor: "#94a3b8",
+                      transform: "scale(0.99)",
+                      backgroundColor: "var(--workflow-item-active)",
                     },
                   }}
                 >
-                  <Box className="flex items-center gap-2">
-                    <Box className="rounded-full w-8 h-8 flex justify-center items-center bg-gray-100">
+                  <Box className="flex items-center gap-4">
+                    <Box className="rounded-lg w-10 h-10 flex justify-center items-center bg-workflow-iconBg">
                       {item.icon}
                     </Box>
                     <Box>
                       <Typography
                         variant="body2"
-                        className="font-medium text-gray-900"
+                        className="font-medium text-workflow-textGray mb-0.5"
                       >
                         {item.name}
                       </Typography>
-                      <Typography variant="caption" className="text-gray-600">
+                      <Typography
+                        variant="caption"
+                        className="text-workflow-textGray500 leading-snug block"
+                      >
                         {item.description}
                       </Typography>
                     </Box>
@@ -89,9 +94,9 @@ const SideBar = () => {
         ))}
       </Box>
 
-      <Divider sx={{ backgroundColor: "#e2e8f0" }} />
-      <Box className="p-4 bg-gradient-to-r from-gray-50 to-gray-100">
-        <Typography variant="caption" className="text-gray-600">
+      <Divider sx={{ backgroundColor: "var(--workflow-divider)" }} />
+      <Box className="p-6 bg-gradient-to-b from-workflow-itemBg to-workflow-itemActive text-center">
+        <Typography variant="caption" className="text-workflow-textGray500">
           Drag and drop elements to create your workflow
         </Typography>
       </Box>

@@ -38,22 +38,25 @@ export const CustomEdge = ({
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleEdgeClick}
     >
-      <path className="react-flow__edge-path" d={edgePath} style={edgeStyle} />
-      {(isHovered || selected) && (
-        <foreignObject
-          width={24}
-          height={24}
-          x={labelX - 12}
-          y={labelY - 12}
-          className="cursor-pointer hover:bg-red-50 rounded-full bg-white shadow-md"
-          onClick={handleEdgeClick}
-          style={{ pointerEvents: "all" }}
-        >
-          <div className="flex items-center justify-center w-6 h-6">
-            <DeleteIcon className="text-red-500" sx={{ fontSize: 16 }} />
-          </div>
-        </foreignObject>
-      )}
+      <path
+        data-testid="edge-path"
+        className="react-flow__edge-path"
+        d={edgePath}
+        style={edgeStyle}
+      />
+      <foreignObject
+        width={24}
+        height={24}
+        x={labelX - 12}
+        y={labelY - 12}
+        className="cursor-pointer"
+        onClick={handleEdgeClick}
+        style={{ pointerEvents: "all" }}
+      >
+        <div className="flex items-center justify-center w-6 h-6">
+          <DeleteIcon className="text-red-500" sx={{ fontSize: 16 }} />
+        </div>
+      </foreignObject>
     </g>
   );
 };

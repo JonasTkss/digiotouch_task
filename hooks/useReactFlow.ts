@@ -26,10 +26,11 @@ export const useReactFlow = () => {
     type: "customNode",
     position: node.position,
     data: {
-      name: node.name,
-      description: node.description,
-      iconName: node.iconName,
-      iconColor: node.iconColor,
+      name: node.data.name,
+      description: node.data.description,
+      iconName: node.data.iconName,
+      iconColor: node.data.iconColor,
+      isFirstNode: node.data.isFirstNode,
       onDelete: () => dispatch(removeNode(node.id)),
     },
   }));
