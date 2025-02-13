@@ -6,9 +6,34 @@ interface WorkflowState {
   connections: Connection[];
 }
 
-const initialState: WorkflowState = {
-  nodes: [],
-  connections: [],
+const loadState = (): WorkflowState => {
+  try {
+    const serializedState = localStorage.getItem("workflowState");
+    if (serializedState === null) {
+      return {
+        nodes: [],
+        connections: [],
+      };
+    }
+    return JSON.parse(serializedState);
+  } catch (err) {
+    console.error("Error loading workflow state:", err);
+    return {
+      nodes: [],
+      connections: [],
+    };
+  }
+};
+
+const initialState: WorkflowState = loadState();
+
+const saveState = (state: WorkflowState) => {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem("workflowState", serializedState);
+  } catch (err) {
+    console.error("Error saving workflow state:", err);
+  }
 };
 
 export const workflowSlice = createSlice({
@@ -33,6 +58,7 @@ export const workflowSlice = createSlice({
       };
 
       state.nodes.push(newNode);
+      saveState(state);
     },
     updateNodePosition: (
       state,
@@ -41,6 +67,7 @@ export const workflowSlice = createSlice({
       const node = state.nodes.find((n) => n.id === action.payload.id);
       if (node) {
         node.position = action.payload.position;
+        saveState(state);
       }
     },
     removeNode: (state, action: PayloadAction<string>) => {
@@ -57,6 +84,8 @@ export const workflowSlice = createSlice({
       state.connections = state.connections.filter(
         (conn) => conn.from !== action.payload && conn.to !== action.payload
       );
+
+      saveState(state);
     },
     addConnection: (
       state,
@@ -74,6 +103,7 @@ export const workflowSlice = createSlice({
             from,
             to,
           });
+          saveState(state);
         }
       }
     },
@@ -81,6 +111,7 @@ export const workflowSlice = createSlice({
       state.connections = state.connections.filter(
         (conn) => conn.id !== action.payload
       );
+      saveState(state);
     },
     updateNodeFirstStatus: (
       state,
@@ -95,7 +126,13 @@ export const workflowSlice = createSlice({
       const node = state.nodes.find((node) => node.id === action.payload.id);
       if (node) {
         node.data.isFirstNode = action.payload.isFirstNode;
+        saveState(state);
       }
+    },
+    clearState: (state) => {
+      state.nodes = [];
+      state.connections = [];
+      localStorage.removeItem("workflowState");
     },
   },
 });
@@ -107,6 +144,7 @@ export const {
   addConnection,
   removeConnection,
   updateNodeFirstStatus,
+  clearState,
 } = workflowSlice.actions;
 
 export default workflowSlice.reducer;

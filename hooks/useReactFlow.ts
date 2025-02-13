@@ -18,8 +18,8 @@ import {
 export const useReactFlow = () => {
   const dispatch = useAppDispatch();
   const workflow = useAppSelector((state: RootState) => state.workflow);
-  const storeNodes = (workflow as any).nodes ?? [];
-  const storeConnections = (workflow as any).connections ?? [];
+  const storeNodes = workflow.nodes ?? [];
+  const storeConnections = workflow.connections ?? [];
 
   const initialNodes: Node[] = storeNodes.map((node: any) => ({
     id: node.id,
@@ -46,6 +46,13 @@ export const useReactFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
+  // Load initial state on mount
+  useEffect(() => {
+    setNodes(initialNodes);
+    setEdges(initialEdges);
+  }, []);
+
+  // Update nodes and edges when store changes
   useEffect(() => {
     setNodes(initialNodes);
   }, [storeNodes]);
